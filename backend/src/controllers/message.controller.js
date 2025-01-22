@@ -1,5 +1,5 @@
-import cloudinary from "../lib/cloudinary";
-import Message from "../models/message.model";
+import cloudinary from "../lib/cloudinary.js";
+import Message from "../models/message.model.js";
 
 
 
@@ -66,7 +66,7 @@ export const sendMessage = async (req,res)=>{
         //realtime functionality is coming here
 
         res.status(201).json(newMessage);
-        
+
 
     } catch (error) {
         console.log("Error in sendMessage: ",error.message);
