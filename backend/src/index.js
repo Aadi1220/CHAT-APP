@@ -5,14 +5,22 @@ import authRoutes from "./routes/auth.route.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import messageRoutes from "./routes/message.route.js";
+import cors from "cors";
+import { app,server } from "./lib/socket.js";
 
 
-const app = express();
 
-const PORT = process.env.PORT || 5001
 
-app.use(express.json());
+const PORT = process.env.PORT || 5001;
+
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials:true
+}))
 
 app.get("/",(req,res)=>{
     res.send("Working")
@@ -21,11 +29,11 @@ app.get("/",(req,res)=>{
 
 
 app.use("/api/auth", authRoutes);
-app.use("/api/message", messageRoutes);
+app.use("/api/messages", messageRoutes);
 
 
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`)
     connectDB();
 })
